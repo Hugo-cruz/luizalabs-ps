@@ -1,0 +1,4 @@
+# Production requirements
+# List all packages that needed during runtime.
+
+flask-restx~=0.4
