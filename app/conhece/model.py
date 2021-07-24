@@ -1,6 +1,7 @@
 
 import json
 from os import write
+from typing import final
 
 FILES_RELATIVE_PATH = "app/conhece/files/"
 
@@ -66,7 +67,6 @@ def create_index():
 def get_index():
     return get_file("index.json")
 
-
 def get_persons_with_letter_file(name):
     index = get_index()
     name_initial_letter = name[0]
@@ -75,14 +75,12 @@ def get_persons_with_letter_file(name):
     return person_with_letter_info,file_name
 
 def get_persons_friend(name):
-    person_with_letter_info = get_persons_with_letter_file(name)
+    person_with_letter_info,file_name = get_persons_with_letter_file(name)
     return person_with_letter_info[name]
 
 
 def insert_person(name,friends):
     respective_file,file_name = get_persons_with_letter_file(name)
-    print("rf)")
-    print(respective_file)
     if(respective_file == {} or name not in respective_file.keys()):
         respective_file[name] = friends
         write_to_file(respective_file,file_name)
@@ -128,7 +126,26 @@ def get_all_nodes():
         letter_names = get_all_people_from_file(index[letter])
         if(len(letter_names)>0):
             names = names + list(letter_names)
-    print(names)
     return names
 
+def on_list1_but_not_on_list2(list1,list2):
+    return list(set(list1) - set(list2))
+
+def compress_list(name,result_friends):
+    final_result = []
+    for item in result_friends:
+        if(item not in final_result and item != name):
+            final_result.append(item)
+    
+    return final_result
+
+
+def get_not_friends(name):
+    friends = get_persons_friend(name)
+    result_friends = []
+    for friend in friends:
+        friends_of_friend = get_persons_friend(friend)
+        friends_that_match = on_list1_but_not_on_list2(friends_of_friend,friends)
+        result_friends = result_friends + friends_that_match
+    return compress_list(name,result_friends)
 

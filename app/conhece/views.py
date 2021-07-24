@@ -24,5 +24,5 @@ class ConheceResource(Resource):
     def get():
         """Conhece get."""
         
-        get_all_nodes()
+        print(get_not_friends("joao"))
         return "Conhece"
