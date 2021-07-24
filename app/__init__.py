@@ -3,10 +3,11 @@
 from flask import Flask
 from app.ping import ping
 from app.dummy import dummy
+from app.conhece import conhece
 
 # Active endpoints noted as following:
 # (url_prefix, blueprint_object)
-ACTIVE_ENDPOINTS = (("/", ping), ("/dummy", dummy))
+ACTIVE_ENDPOINTS = (("/", ping), ("/dummy", dummy),("/conhece",conhece))
 
 
 def create_app():
