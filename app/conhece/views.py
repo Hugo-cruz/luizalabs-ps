@@ -1,7 +1,7 @@
 """Dummy views module."""
 
 from app.conhece.model import initial_setup
-from flask import Blueprint
+from flask import Blueprint,request
 from flask_restx import Api, Resource
 import json
 
@@ -18,11 +18,24 @@ api = Api(
 
 @api.route("/")
 class ConheceResource(Resource):
-    """Dummy resource."""
-
     @staticmethod
     def get():
-        """Conhece get."""
-        
-        print(get_not_friends("joao"))
-        return "Conhece"
+        return get_all_nodes()
+
+@api.route("/<string:name>")
+class ConheceResource(Resource):
+    def get(self,name):
+        return get_friends(name)
+
+@api.route("/nao/<string:name>")
+class ConheceResource(Resource):
+    def get(self,name):
+        return get_not_friends(name)
+
+@api.route("/cadastrar")
+class ConheceResource(Resource):
+    def post(self):
+        content = request.json
+        for name in content:
+            insert_person(name,content[name])
+        return "ok"
