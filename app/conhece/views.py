@@ -24,5 +24,5 @@ class ConheceResource(Resource):
     def get():
         """Conhece get."""
         
-        initial_setup()
+        get_all_nodes()
         return "Conhece"

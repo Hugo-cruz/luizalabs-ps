@@ -113,3 +113,22 @@ def initial_setup():
         else:
             print(result+" succesfully created")
 
+
+def get_all_people_from_file(filename):
+    names = []
+    file = get_file(filename)
+    for name in file:
+        names.append(name)
+    return names
+
+def get_all_nodes():
+    names = []
+    index = get_index()
+    for letter in index:
+        letter_names = get_all_people_from_file(index[letter])
+        if(len(letter_names)>0):
+            names = names + list(letter_names)
+    print(names)
+    return names
+
+
