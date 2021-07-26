@@ -21,28 +21,34 @@ docker run --publish 5000:5000 python-docker
 ```
 
 ## Patterns
-This project was made based on [MVC](https://pt.wikipedia.org/wiki/MVC) pattern. This pattern was choosen to make it easy to maintain or to scale. we used a the <i>model.py</i> file, all data handling code is
+This project was made based on [MVC](https://pt.wikipedia.org/wiki/MVC) pattern. This pattern was choosen to make it easy to maintain or to scale. we used a the <i>model.py</i> file to handle all the data on the app, so it's easier to change to another approach of data handling (MySQL, for example) and keep the method's names to avoid crashing. 
 
+We choose MVC also for a posible insertion of a frontend, for this, it's just a matter of insert some html on the <i>views.py</i> file.
 
-## Usage
-
+## File System
+To model the graph described in the challenge, we used a adjacency list. As we are using python, we took advantage of it's dict implementation, in whice we can acess data on O(1) time complexity. It's been implemented like this:
 ```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
+graph = {
+    "person1":["person2","person3"],
+    "person2":["person1"],
+    "person3":["person1"]
+}
 ```
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+As we are dealing with a specific problem, we are not modeling a full forest, with all graph properties, we are taking advantage of some specifics of this problem:
+- The keys are persons name, so we can deal with it in alphabetical order
+- We are only dealing with friends, so they cannot be many (a person cannot have 10ˆ9 friends, for example)
 
-Please make sure to update tests as appropriate.
+Knowing this, we keep the people's records among several files, each on for a lettter of the alphabet, so we can access a large variety of people in RAM. To know in which file are kept each letter, we have a <i>index.json</i> file with all file's name mapped (it can be used to scale the project too, only changing to another service, like a KVS).
 
-## License
-[MIT](https://choosealicense.com/licenses/mit/)
+The basic acces is done by:
+- Get the first letter of the name
+- Access the index
+- Select the file name
+- Load the file pointed by that name in RAM as a json
+- Access the  friend's list
+
+The worst case is accessed by O(26), and the number of acces can be improved by ordering the friend's list.
+
+## Author
+Hugo Fellipe 
