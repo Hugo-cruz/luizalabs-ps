@@ -1,0 +1,6 @@
+# Test's requirements
+
+-r requirements.txt
+
+pytest==5.4.3
+pytest-flask==1.0.0
